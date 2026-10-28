@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dicta</title>
+<meta name="description" content="What company leaders said, word for word, with the source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#feed">
+      <span class="brand-mark" aria-hidden="true">&ldquo;</span>
+      <span>
+        <span class="brand-name">Dicta</span><br>
+        <span class="brand-tag">What leaders said, straight from the source.</span>
+      </span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#feed" data-view="feed">Feed</a>
+      <a href="#corrections" data-view="corrections">Corrections</a>
+      <a href="#about" data-view="about">How we verify</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <main id="view-feed" class="view">
+    <div class="notice"><b>Context, not investment advice.</b><span>This is a beta. Check the original source before you rely on a quote.</span></div>
+    <div class="feed-grid">
+      <section class="feed-col" aria-label="Quotes">
+        <div class="filters">
+          <label class="sr" for="q">Search quotes</label>
+          <input id="q" type="search" placeholder="Search a company, ticker or speaker">
+          <div class="chips" id="channelChips" role="group" aria-label="Filter by channel"></div>
+        </div>
+        <div id="feed" class="feed"><div class="empty"><b>Loading quotes…</b></div></div>
+      </section>
+      <aside class="side">
+        <section class="box" id="digestBox" aria-label="Weekly digest"></section>
+        <section class="box">
+          <h2>How we check quotes</h2>
+          <p>Every quote is matched word for word to its original source, and the channel is labeled. Posts from personal accounts are marked, since companies don't always treat them as official.</p>
+          <a href="#about">Read the full process</a>
+        </section>
+        <p class="status" id="updated"></p>
+      </aside>
+    </div>
+  </main>
+
+  <main id="view-corrections" class="view" hidden>
+    <div class="page">
+      <h1>Corrections</h1>
+      <p class="lede">When we get something wrong, we fix it here in the open, with the date.</p>
+      <div class="clist" id="corrList"></div>
+    </div>
+  </main>
+
+  <main id="view-about" class="view" hidden>
+    <div class="page">
+      <h1>How we verify</h1>
+      <p class="lede">Dicta shows what company leaders actually said, so you can read the original instead of someone else's summary of it.</p>
+      <ol>
+        <li>We take the quote from the original source: an earnings release, filing, call transcript, interview or post.</li>
+        <li>A person checks every word against that source before it goes up, and we link to it.</li>
+        <li>We keep quotes short and mark trimmed text with "…". The link has the rest.</li>
+        <li>We label the channel. Posts on an executive's personal account are marked as personal, because companies don't always treat those as official disclosure.</li>
+        <li>We tag related companies, like suppliers, customers and competitors.</li>
+        <li>We fix mistakes in the open. Every correction is listed on the Corrections page.</li>
+      </ol>
+      <h2>Not investment advice</h2>
+      <p>Everyone sees the same content. Nothing here is tailored to your holdings, and nothing here tells you to buy or sell.</p>
+      <h2>Team trading rule</h2>
+      <p id="tradeRule" class="muted">The team's trading rule will be posted here before launch.</p>
+      <h2>Contact</h2>
+      <p id="contact" class="muted">Contact details coming soon.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(String(u||""))?String(u):"#";
+const CHANNELS=["Earnings call","Press release","Filing","Interview","Official X account","Personal X account"];
+const TONE={confident:{label:"More confident",cls:"good"},same:{label:"About the same",cls:"neutral"},cautious:{label:"More cautious",cls:"warn"}};
+const VIEWS=["feed","corrections","about"];
+const S={quotes:[],corrections:[],config:{},updated:"",error:"",filter:{q:"",channel:"All"}};
+
+function fmtDate(iso){if(!iso)return"";const p=String(iso).slice(0,10).split("-");if(p.length<3)return esc(iso);const d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]));if(isNaN(d))return esc(iso);return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"});}
+async function getJSON(path){const r=await fetch(path+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error(path+" returned "+r.status);return r.json();}
+
+function route(){
+  let v=(location.hash||"#feed").slice(1);if(!VIEWS.includes(v))v="feed";
+  VIEWS.forEach(n=>{$("#view-"+n).hidden=n!==v;});
+  document.querySelectorAll(".tabs a").forEach(a=>{if(a.dataset.view===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+}
+function renderChips(){
+  $("#channelChips").innerHTML=["All"].concat(CHANNELS).map(c=>`<button type="button" class="chip" data-ch="${esc(c)}" aria-pressed="${S.filter.channel===c}">${esc(c==="All"?"All channels":c)}</button>`).join("");
+}
+function reportLink(x){
+  const c=S.config||{};
+  if(c.reportUrl)return `<a href="${esc(safeUrl(c.reportUrl))}" target="_blank" rel="noopener noreferrer">Report an error</a>`;
+  if(c.contactEmail)return `<a href="mailto:${esc(c.contactEmail)}?subject=${encodeURIComponent("Possible error: "+x.ticker+" quote, "+x.date)}">Report an error</a><span class="sel">${esc(c.contactEmail)}</span>`;
+  return "";
+}
+function card(x){
+  const personal=x.channel==="Personal X account";
+  const rel=(x.related||[]).filter(r=>r&&(r.name||r.ticker));
+  const t=TONE[x.toneDirection];
+  const foot=reportLink(x);
+  return `<article class="qcard" id="q-${esc(x.id)}">
+    <div class="qmeta"><span class="tick">${esc(x.ticker)}</span><span class="co">${esc(x.company)}</span><time datetime="${esc(x.date)}">${fmtDate(x.date)}</time><span class="chan${personal?" personal":""}">${personal?"Personal X account, not an official channel":esc(x.channel)}</span>${x.correctedAt?`<a class="corr" href="#corrections">Corrected ${fmtDate(x.correctedAt)}</a>`:""}</div>
+    <blockquote class="qtext"><span class="hl">&ldquo;${esc(x.text)}&rdquo;</span></blockquote>
+    <div class="who"><b>${esc(x.speaker)}</b>${x.role?", "+esc(x.role):""}</div>
+    <div class="src"><a href="${esc(safeUrl(x.sourceUrl))}" target="_blank" rel="noopener noreferrer">${esc(x.sourceTitle||"Original source")} &#8599;</a>${x.verifiedAt?`<span class="ver">&#10003; Checked word for word on ${fmtDate(x.verifiedAt)}</span>`:""}</div>
+    ${rel.length?`<div class="rel"><span class="rel-l">Related</span>${rel.map(r=>`<span class="rchip">${r.ticker?`<span class="mono">${esc(r.ticker)}</span>`:""}<span>${esc(r.name)}</span>${r.relation?`<i>${esc(r.relation)}</i>`:""}</span>`).join("")}</div>`:""}
+    ${t?`<div class="tone"><div class="tone-h"><span class="muted">Wording vs. their past statements</span><span class="pill ${t.cls}">${t.label}</span></div>${x.toneNote?`<p>${esc(x.toneNote)}</p>`:""}<p class="tone-f">Compares wording only. Not a buy or sell signal.</p></div>`:""}
+    ${foot?`<div class="foot">${foot}</div>`:""}
+  </article>`;
+}
+function renderFeed(){
+  const el=$("#feed");
+  if(S.error){el.innerHTML=`<div class="empty"><b>Quotes couldn't load.</b><p>${esc(S.error)}</p></div>`;return;}
+  if(!S.quotes.length){el.innerHTML=`<div class="empty"><b>No quotes yet.</b><p>Each quote goes up after a person checks it word for word against the original source.</p></div>`;return;}
+  const q=S.filter.q.trim().toLowerCase(),ch=S.filter.channel;
+  const items=S.quotes.filter(x=>(ch==="All"||x.channel===ch)&&(!q||[x.company,x.ticker,x.speaker,x.role,x.text].concat((x.related||[]).map(r=>(r.name||"")+" "+(r.ticker||""))).join(" ").toLowerCase().includes(q)));
+  el.innerHTML=items.length?items.map(card).join(""):`<div class="empty"><b>No quotes match.</b><button type="button" class="linkbtn" id="clearFilter">Clear the search and filters</button></div>`;
+}
+function renderSide(){
+  const c=S.config||{};
+  let h=`<h2>Weekly digest</h2><p>Once a week: what the leaders of the companies your club follows actually said, each quote with its source.</p>`;
+  if(c.signupUrl)h+=`<a class="btn" href="${esc(safeUrl(c.signupUrl))}" target="_blank" rel="noopener noreferrer">Join the digest &#8599;</a>`;
+  else if(c.contactEmail)h+=`<p>To join, email <span class="sel">${esc(c.contactEmail)}</span></p>`;
+  else h+=`<p class="muted">Sign-ups open soon.</p>`;
+  $("#digestBox").innerHTML=h;
+  $("#updated").textContent=S.updated?`Feed updated ${fmtDate(S.updated).replace(/<[^>]+>/g,"")}`:"";
+  if(c.tradingRule){$("#tradeRule").textContent=c.tradingRule;$("#tradeRule").classList.remove("muted");}
+  if(c.contactEmail){$("#contact").innerHTML=`Email <span class="sel">${esc(c.contactEmail)}</span>`;$("#contact").classList.remove("muted");}
+}
+function renderCorrections(){
+  const el=$("#corrList");
+  el.innerHTML=S.corrections.length?S.corrections.map(c=>`<div class="citem"><div class="qmeta"><time>${fmtDate(c.date)}</time><span class="co">${esc(c.label||"")}</span></div><p>${esc(c.note)}</p></div>`).join(""):`<div class="empty"><b>No corrections yet.</b><p>If we fix a quote, the change will be listed here with the date.</p></div>`;
+}
+async function load(){
+  try{
+    const q=await getJSON("data/quotes.json");
+    S.quotes=(q.quotes||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+    S.updated=q.updated||"";
+  }catch(e){
+    S.error=location.protocol==="file:"?"Browsers block the data files when you open this page straight from your computer. Open it through the website address, or run a local server.":"The data file is missing or has a typo. If you just edited data/quotes.json, check it for a missing comma or quote mark.";
+    console.error(e);
+  }
+  try{S.config=await getJSON("data/config.json");}catch(_){S.config={};}
+  try{const c=await getJSON("data/corrections.json");S.corrections=(c.corrections||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));}catch(_){S.corrections=[];}
+  renderFeed();renderSide();renderCorrections();
+}
+$("#q").addEventListener("input",e=>{S.filter.q=e.target.value;renderFeed();});
+$("#channelChips").addEventListener("click",e=>{const b=e.target.closest("[data-ch]");if(!b)return;S.filter.channel=b.dataset.ch;renderChips();renderFeed();});
+$("#feed").addEventListener("click",e=>{if(e.target.id==="clearFilter"){S.filter={q:"",channel:"All"};$("#q").value="";renderChips();renderFeed();}});
+window.addEventListener("hashchange",route);
+route();renderChips();renderSide();renderCorrections();load();
+})();
+</script>
+</body>
+</html>

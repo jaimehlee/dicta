@@ -1,0 +1,143 @@
+{
+  "updated": "2026-10-22",
+  "quotes": [
+    {
+      "id": "nasdaq-2026q3",
+      "company": "Nasdaq",
+      "ticker": "NASDAQ:NDAQ",
+      "speaker": "Adena Friedman",
+      "role": "Chair and CEO",
+      "date": "2026-10-22",
+      "channel": "Press release",
+      "text": "Nasdaq’s third quarter performance demonstrates the strength and momentum of our business",
+      "sourceUrl": "https://www.globenewswire.com/news-release/2026/10/22/3386185/6948/en/nasdaq-reports-third-quarter-2026-results-strong-execution-drives-1-2-billion-of-solutions-revenue-record-arr-of-3-4-billion.html",
+      "sourceTitle": "Q3 2026 results release",
+      "related": [
+        {"ticker": "NYSE:ICE", "name": "Intercontinental Exchange", "relation": "competitor"},
+        {"ticker": "NASDAQ:CME", "name": "CME Group", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "3m-2026q3",
+      "company": "3M",
+      "ticker": "NYSE:MMM",
+      "speaker": "William Brown",
+      "role": "Chairman and CEO",
+      "date": "2026-10-20",
+      "channel": "Press release",
+      "text": "We delivered another quarter of strong results, including solid sales growth, continued margin expansion…",
+      "sourceUrl": "https://news.3m.com/2026-10-20-3M-Reports-Third-Quarter-2026-Results-Raises-Full-Year-EPS-Guidance",
+      "sourceTitle": "Q3 2026 results release",
+      "related": [
+        {"ticker": "NASDAQ:HON", "name": "Honeywell", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "geaerospace-2026q3",
+      "company": "GE Aerospace",
+      "ticker": "NYSE:GE",
+      "speaker": "H. Lawrence Culp, Jr.",
+      "role": "Chairman and CEO",
+      "date": "2026-10-20",
+      "channel": "Press release",
+      "text": "We are raising our 2026 guidance across the board…",
+      "sourceUrl": "https://www.geaerospace.com/news/press-releases/ge-aerospace-announces-third-quarter-2026-results",
+      "sourceTitle": "Q3 2026 results release",
+      "related": [
+        {"ticker": "NYSE:BA", "name": "Boeing", "relation": "customer"},
+        {"ticker": "EPA:AIR", "name": "Airbus", "relation": "customer"},
+        {"ticker": "EPA:SAF", "name": "Safran", "relation": "partner"},
+        {"ticker": "NYSE:RTX", "name": "RTX", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "tsmc-2026q3-call",
+      "company": "TSMC",
+      "ticker": "NYSE:TSM",
+      "speaker": "C.C. Wei",
+      "role": "Chairman and CEO",
+      "date": "2026-10-15",
+      "channel": "Earnings call",
+      "text": "The AI market continues to be very strong.",
+      "sourceUrl": "https://investor.tsmc.com/english/encrypt/files/encrypt_file/reports/2026-10/eba4fac72873bf546b669bd2b5d973df5c93215d/TSMC%203Q26%20Transcript.pdf",
+      "sourceTitle": "Q3 2026 earnings call transcript",
+      "related": [
+        {"ticker": "NASDAQ:NVDA", "name": "Nvidia", "relation": "customer"},
+        {"ticker": "NASDAQ:AAPL", "name": "Apple", "relation": "customer"},
+        {"ticker": "NASDAQ:ASML", "name": "ASML", "relation": "supplier"},
+        {"ticker": "KRX:005930", "name": "Samsung Electronics", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "asml-2026q3",
+      "company": "ASML",
+      "ticker": "NASDAQ:ASML",
+      "speaker": "Christophe Fouquet",
+      "role": "President and CEO",
+      "date": "2026-10-14",
+      "channel": "Press release",
+      "text": "In the third quarter we reported a record total net sales of €11.7 billion…",
+      "sourceUrl": "https://mfn.se/all/a/asml-holding/asml-reports-eu11-7-billion-total-net-sales-and-eu5-0-billion-net-income-in-q3-2026-6f2ccf27",
+      "sourceTitle": "Q3 2026 results release",
+      "related": [
+        {"ticker": "NYSE:TSM", "name": "TSMC", "relation": "customer"},
+        {"ticker": "KRX:005930", "name": "Samsung Electronics", "relation": "customer"},
+        {"ticker": "NASDAQ:INTC", "name": "Intel", "relation": "customer"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "goldman-2026q3",
+      "company": "Goldman Sachs",
+      "ticker": "NYSE:GS",
+      "speaker": "David Solomon",
+      "role": "Chairman and CEO",
+      "date": "2026-10-13",
+      "channel": "Press release",
+      "text": "…a complicated operating environment, our clients continued to turn to Goldman Sachs",
+      "sourceUrl": "https://www.goldmansachs.com/pressroom/press-releases/2026/2026-10-13-q3-results",
+      "sourceTitle": "Q3 2026 results release",
+      "related": [
+        {"ticker": "NYSE:MS", "name": "Morgan Stanley", "relation": "competitor"},
+        {"ticker": "NYSE:JPM", "name": "JPMorgan Chase", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    },
+    {
+      "id": "jpmorgan-2026q3",
+      "company": "JPMorgan Chase",
+      "ticker": "NYSE:JPM",
+      "speaker": "Jamie Dimon",
+      "role": "Chairman and CEO",
+      "date": "2026-10-13",
+      "channel": "Filing",
+      "text": "…we remain prepared for a wide range of outcomes.",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/0000019617/000162828026065582/a3q26erfexhibit991narrative.htm",
+      "sourceTitle": "Q3 2026 earnings release (SEC Form 8-K)",
+      "related": [
+        {"ticker": "NYSE:BAC", "name": "Bank of America", "relation": "competitor"},
+        {"ticker": "NYSE:C", "name": "Citigroup", "relation": "competitor"},
+        {"ticker": "NYSE:GS", "name": "Goldman Sachs", "relation": "competitor"}
+      ],
+      "toneDirection": "",
+      "toneNote": "",
+      "verifiedAt": "2026-10-22"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Dicta Review Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="./">
+      <span class="brand-mark" aria-hidden="true">&ldquo;</span>
+      <span><span class="brand-name">Dicta</span><br><span class="brand-tag">Review desk for the team</span></span>
+    </a>
+  </div>
+</header>
+
+<div class="wrap" style="display:grid;gap:20px">
+  <section class="panel">
+    <h2>How this works</h2>
+    <ol style="margin:0;padding-left:22px;display:grid;gap:6px">
+      <li>Open each release below and find the line worth quoting.</li>
+      <li>Click <b>Fill the form</b>, type the quote exactly as written (14 words or fewer), tick the checklist, and click <b>Add quote</b>.</li>
+      <li>Tick <b>Done</b> on each release you've finished, even if you didn't quote it.</li>
+      <li>Copy the two outputs at the bottom into <span class="mono">data/quotes.json</span> and <span class="mono">data/pending.json</span> on GitHub (open the file, click the pencil, select all, paste, commit).</li>
+      <li>The site checks the files and updates in a few minutes. If something's wrong, the old version stays up and GitHub emails you what to fix.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>Releases to review</h2>
+    <div id="pendingList" style="display:grid;gap:10px"><p class="muted">Loading…</p></div>
+  </section>
+
+  <form class="panel" id="quoteForm" novalidate>
+    <h2>New quote</h2>
+    <div class="grid3">
+      <div class="field"><label for="f-company">Company</label><input id="f-company" type="text"></div>
+      <div class="field"><label for="f-ticker">Ticker as shown on the site</label><input id="f-ticker" type="text" placeholder="NYSE:JPM"></div>
+      <div class="field"><label for="f-date">Date said</label><input id="f-date" type="date"></div>
+      <div class="field"><label for="f-speaker">Speaker</label><input id="f-speaker" type="text"></div>
+      <div class="field"><label for="f-role">Role</label><input id="f-role" type="text" placeholder="Chairman and CEO"></div>
+      <div class="field"><label for="f-channel">Channel</label><select id="f-channel"></select></div>
+    </div>
+    <div class="field">
+      <label for="f-text">Quote, exactly as written</label>
+      <textarea id="f-text" rows="2"></textarea>
+      <span class="hint" id="f-count">14 words or fewer. Mark any cut with … and let the link carry the rest.</span>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="f-srcurl">Source link</label><input id="f-srcurl" type="url" placeholder="https://"></div>
+      <div class="field"><label for="f-srctitle">Source name</label><input id="f-srctitle" type="text" placeholder="Q3 2026 results release"></div>
+    </div>
+    <div class="field">
+      <span class="lab">Related companies</span>
+      <div id="f-related" style="display:grid;gap:8px"></div>
+      <div><button type="button" class="linkbtn" id="addRel">Add a related company</button></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="f-tonedir">Wording vs. their past statements</label>
+        <select id="f-tonedir"><option value="">Not compared</option><option value="confident">More confident</option><option value="same">About the same</option><option value="cautious">More cautious</option></select>
+      </div>
+      <div class="field"><label for="f-tonenote">Tone note</label><input id="f-tonenote" type="text" placeholder="What changed in the wording, in one line"></div>
+    </div>
+    <fieldset class="checklist">
+      <legend class="sr">Verification checklist</legend>
+      <label class="check"><input type="checkbox" class="chk" id="chk1"> I matched every word to the original source.</label>
+      <label class="check"><input type="checkbox" class="chk" id="chk2"> The trim doesn't change what the person meant.</label>
+      <label class="check"><input type="checkbox" class="chk" id="chk3"> The channel is labeled correctly (official or personal).</label>
+      <label class="check"><input type="checkbox" class="chk" id="chk4"> Any tone note describes wording only, not a buy or sell call.</label>
+      <label class="check"><input type="checkbox" class="chk" id="chk5"> This follows our team trading rule.</label>
+    </fieldset>
+    <div class="row"><button class="btn" type="submit" id="addQuote" disabled>Add quote</button><span class="msg" id="f-msg" role="status"></span></div>
+  </form>
+
+  <section class="panel">
+    <h2>Quotes added this session</h2>
+    <div id="addedList"><p class="muted">None yet.</p></div>
+  </section>
+
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>1. New data/quotes.json</h2><button type="button" class="btn ghost" data-copy="out-quotes">Copy</button></div>
+    <label class="sr" for="out-quotes">New contents of data/quotes.json</label>
+    <textarea id="out-quotes" class="out" rows="10" readonly></textarea>
+  </section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>2. New data/pending.json</h2><button type="button" class="btn ghost" data-copy="out-pending">Copy</button></div>
+    <label class="sr" for="out-pending">New contents of data/pending.json</label>
+    <textarea id="out-pending" class="out" rows="8" readonly></textarea>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const CHANNELS=["Earnings call","Press release","Filing","Interview","Official X account","Personal X account"];
+const S={quotes:[],quotesDoc:{},pending:{items:[]},done:new Set(),added:[]};
+function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
+function words(s){return String(s||"").replace(/…/g," ").trim().split(/\s+/).filter(w=>/\w/.test(w)).length;}
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>{t.hidden=true;},3000);}
+async function getJSON(p){const r=await fetch(p+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error(p+" "+r.status);return r.json();}
+
+function relRow(r){
+  r=r||{};const d=document.createElement("div");d.className="relrow";
+  d.innerHTML=`<input class="r-t" type="text" placeholder="Ticker" aria-label="Related ticker" value="${esc(r.ticker||"")}"><input class="r-n" type="text" placeholder="Company name" aria-label="Related company name" value="${esc(r.name||"")}"><select class="r-k" aria-label="Relationship">${["supplier","customer","competitor","partner"].map(k=>`<option${r.relation===k?" selected":""}>${k}</option>`).join("")}</select><button type="button" class="linkbtn r-x">Remove</button>`;
+  return d;
+}
+function resetForm(){$("#quoteForm").reset();$("#f-related").innerHTML="";$("#f-related").appendChild(relRow());$("#f-date").value=today();$("#f-msg").textContent="";updateState();}
+function updateState(){
+  const n=words($("#f-text").value);
+  $("#f-count").textContent=n?`${n} word${n===1?"":"s"}${n>14?". Too long: trim it to 14 or fewer.":""}`:"14 words or fewer. Mark any cut with … and let the link carry the rest.";
+  $("#f-count").style.color=n>14?"var(--bad)":"";
+  $("#addQuote").disabled=!$$(".chk").every(c=>c.checked);
+}
+function renderPending(){
+  const el=$("#pendingList");const items=S.pending.items||[];
+  if(!items.length){el.innerHTML=`<p class="muted">Nothing to review. The daily check adds new releases here on weekday mornings.</p>`;return;}
+  el.innerHTML=items.map((it,i)=>`<div class="pend${S.done.has(it.id)?" done":""}">
+    <div class="row" style="justify-content:space-between"><b>${esc(it.company)} <span class="mono">${esc(it.ticker)}</span></b><span class="mono muted">${esc(it.form)} · filed ${esc(it.filed)}</span></div>
+    <div class="hint">${(it.quotedPeople||[]).length?(it.quotedPeople||[]).map(p=>`${esc(p.speaker)}: “${esc(p.startsWith)}”`).join("<br>"):"No quotes spotted. Open the source to check."}</div>
+    <div class="row"><a href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">Open the source ↗</a><button type="button" class="linkbtn" data-fill="${i}">Fill the form</button><label class="check"><input type="checkbox" data-done="${esc(it.id)}"${S.done.has(it.id)?" checked":""}> Done</label></div>
+  </div>`).join("");
+}
+function fillFrom(it){
+  resetForm();
+  $("#f-company").value=it.company||"";$("#f-ticker").value=it.ticker||"";$("#f-date").value=it.filed||today();
+  const sec=/sec\.gov/i.test(it.url||"");
+  $("#f-channel").value=sec?"Filing":"Press release";
+  $("#f-srcurl").value=it.url||"";
+  $("#f-srctitle").value=sec?`Earnings release (SEC Form ${it.form||"8-K"})`:"Results release";
+  const p=(it.quotedPeople||[]).find(x=>x.speaker&&x.speaker!=="Check the source");
+  if(p)$("#f-speaker").value=p.speaker;
+  $("#quoteForm").scrollIntoView({behavior:"smooth",block:"start"});
+  $("#f-text").focus({preventScroll:true});
+}
+function renderAdded(){
+  $("#addedList").innerHTML=S.added.length?`<div style="display:grid;gap:8px">${S.added.map((q,i)=>`<div class="pend"><div><b>${esc(q.ticker)}</b> ${esc(q.speaker)}, ${esc(q.date)}</div><div class="hint">“${esc(q.text)}”</div><div><button type="button" class="linkbtn" data-unadd="${i}">Remove</button></div></div>`).join("")}</div>`:`<p class="muted">None yet.</p>`;
+  const quotesDoc=Object.assign({},S.quotesDoc,{updated:S.added.length?today():(S.quotesDoc.updated||today()),quotes:S.added.concat(S.quotes)});
+  $("#out-quotes").value=JSON.stringify(quotesDoc,null,2)+"\n";
+  const pend=Object.assign({},S.pending,{items:(S.pending.items||[]).filter(it=>!S.done.has(it.id))});
+  $("#out-pending").value=JSON.stringify(pend,null,2)+"\n";
+}
+function addQuote(e){
+  e.preventDefault();const msg=$("#f-msg");msg.className="msg err";
+  const q={company:$("#f-company").value.trim(),ticker:$("#f-ticker").value.trim().toUpperCase(),speaker:$("#f-speaker").value.trim(),role:$("#f-role").value.trim(),date:$("#f-date").value,channel:$("#f-channel").value,
+    text:$("#f-text").value.trim().replace(/^[“"]+|[”"]+$/g,""),sourceUrl:$("#f-srcurl").value.trim(),sourceTitle:$("#f-srctitle").value.trim(),
+    related:$$("#f-related .relrow").map(r=>({ticker:r.querySelector(".r-t").value.trim().toUpperCase(),name:r.querySelector(".r-n").value.trim(),relation:r.querySelector(".r-k").value})).filter(r=>r.ticker||r.name),
+    toneDirection:$("#f-tonedir").value,toneNote:$("#f-tonenote").value.trim(),verifiedAt:today()};
+  const missing=[["company","Company"],["ticker","Ticker"],["date","Date"],["speaker","Speaker"],["text","Quote"],["sourceUrl","Source link"]].filter(([k])=>!q[k]).map(([,l])=>l);
+  if(missing.length){msg.textContent="Fill in: "+missing.join(", ")+".";return;}
+  if(!/^https:\/\//i.test(q.sourceUrl)){msg.textContent="The source link must start with https://";return;}
+  if(words(q.text)>14){msg.textContent="The quote is too long. Trim it to 14 words or fewer.";return;}
+  q.id=(q.ticker.split(":").pop()+"-"+q.date+"-"+Math.random().toString(36).slice(2,6)).toLowerCase().replace(/[^a-z0-9-]/g,"");
+  S.added.unshift(q);renderAdded();resetForm();toast("Added. Copy the outputs below when you're done.");
+}
+async function copy(id){const el=$("#"+id);try{await navigator.clipboard.writeText(el.value);toast("Copied");}catch(_){el.focus();el.select();toast("Selected. Press Ctrl+C or Cmd+C.");}}
+
+$("#f-channel").innerHTML=CHANNELS.map(c=>`<option>${esc(c)}</option>`).join("");
+$("#addRel").addEventListener("click",()=>$("#f-related").appendChild(relRow()));
+$("#f-related").addEventListener("click",e=>{const x=e.target.closest(".r-x");if(x)x.closest(".relrow").remove();});
+$("#quoteForm").addEventListener("input",updateState);
+$("#quoteForm").addEventListener("change",updateState);
+$("#quoteForm").addEventListener("submit",addQuote);
+$("#pendingList").addEventListener("click",e=>{const b=e.target.closest("[data-fill]");if(b)fillFrom(S.pending.items[+b.dataset.fill]);});
+$("#pendingList").addEventListener("change",e=>{const c=e.target.closest("[data-done]");if(!c)return;if(c.checked)S.done.add(c.dataset.done);else S.done.delete(c.dataset.done);renderPending();renderAdded();});
+$("#addedList").addEventListener("click",e=>{const b=e.target.closest("[data-unadd]");if(b){S.added.splice(+b.dataset.unadd,1);renderAdded();}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(b)copy(b.dataset.copy);});
+
+(async function(){
+  resetForm();
+  try{S.quotesDoc=await getJSON("data/quotes.json");S.quotes=S.quotesDoc.quotes||[];}catch(e){$("#pendingList").innerHTML=`<p class="msg err">Couldn't read data/quotes.json. Open this page through the website address, and check the file for typos.</p>`;return;}
+  try{S.pending=await getJSON("data/pending.json");}catch(_){S.pending={items:[]};}
+  renderPending();renderAdded();
+})();
+})();
+</script>
+</body>
+</html>

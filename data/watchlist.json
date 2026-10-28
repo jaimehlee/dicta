@@ -1,0 +1,12 @@
+{
+  "note": "Companies the daily check watches on SEC EDGAR. Use the US ticker the company files under. 'display' is how the ticker shows on the site.",
+  "companies": [
+    {"ticker": "JPM", "display": "NYSE:JPM", "name": "JPMorgan Chase"},
+    {"ticker": "GS", "display": "NYSE:GS", "name": "Goldman Sachs"},
+    {"ticker": "MMM", "display": "NYSE:MMM", "name": "3M"},
+    {"ticker": "GE", "display": "NYSE:GE", "name": "GE Aerospace"},
+    {"ticker": "NDAQ", "display": "NASDAQ:NDAQ", "name": "Nasdaq"},
+    {"ticker": "TSM", "display": "NYSE:TSM", "name": "TSMC"},
+    {"ticker": "ASML", "display": "NASDAQ:ASML", "name": "ASML"}
+  ]
+}
