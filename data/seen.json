@@ -1,4 +1,11 @@
 {
   "note": "Filings the daily check has already listed, so it never lists them twice. The check updates this file itself.",
-  "ids": []
+  "ids": [
+    "66740-0000066740-26-000308",
+    "40545-0000040545-26-000063",
+    "1120193-0001120193-26-000017",
+    "1046179-0001046179-26-000728",
+    "1046179-0001046179-26-000726",
+    "937966-0001628280-26-065813"
+  ]
 }
