@@ -1,4 +1,16 @@
 {
   "note": "Earnings releases the daily check found. Review each one, add any quote to quotes.json, then delete the item from this list.",
-  "items": []
+  "items": [
+    {
+      "id": "1046179-0001046179-26-000797",
+      "company": "TSMC",
+      "ticker": "NYSE:TSM",
+      "form": "6-K",
+      "filed": "2026-11-10",
+      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000797/tsm-boardx202611xx.htm",
+      "filingIndex": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000797/",
+      "quotedPeople": [],
+      "found": "2026-11-10"
+    }
+  ]
 }
